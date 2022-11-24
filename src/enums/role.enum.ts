@@ -1,0 +1,5 @@
+export enum Role {
+  BUILDING_MANAGER = 'BUILDING_MANAGER',
+  FLOOR_MANAGER = 'FLOOR_MANAGER',
+  USER = 'USER',
+}
