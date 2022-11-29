@@ -3,8 +3,8 @@ import { Gender } from 'src/enums/gender.enum';
 import { Region } from 'src/enums/region.enum';
 import { Religion } from 'src/enums/religion.enum';
 import { Role } from 'src/enums/role.enum';
-import { Hobby } from 'src/hobbies/entities/hobby.entity';
-import { Major } from 'src/majors/entities/major.entity';
+import { Hobby } from 'src/modules/hobbies/entities/hobby.entity';
+import { Major } from 'src/modules/majors/entities/major.entity';
 import {
   Column,
   Entity,

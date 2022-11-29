@@ -1,6 +1,6 @@
 import { AbstractEntity } from 'src/abstracts/entity.abstract';
-import { Rent } from 'src/rents/entities/rent.entity';
-import { User } from 'src/users/entity/users.entity';
+import { Rent } from 'src/modules/rents/entities/rent.entity';
+import { User } from 'src/modules/users/entity/users.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()

@@ -1,5 +1,5 @@
 import { AbstractEntity } from 'src/abstracts/entity.abstract';
-import { Building } from 'src/buildings/entities/building.entity';
+import { Building } from 'src/modules/buildings/entities/building.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
