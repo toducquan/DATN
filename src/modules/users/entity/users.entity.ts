@@ -1,10 +1,10 @@
 import { AbstractEntity } from 'src/abstracts/entity.abstract';
 import { Gender } from 'src/enums/gender.enum';
+import { Major } from 'src/enums/major.enum';
 import { Region } from 'src/enums/region.enum';
 import { Religion } from 'src/enums/religion.enum';
 import { Role } from 'src/enums/role.enum';
 import { Hobby } from 'src/modules/hobbies/entities/hobby.entity';
-import { Major } from 'src/modules/majors/entities/major.entity';
 import {
   Column,
   Entity,
@@ -129,7 +129,10 @@ export class User extends AbstractEntity {
   @JoinTable()
   hobbies: Hobby[];
 
-  @ManyToOne(() => Major)
-  @JoinColumn({ name: 'majorId' })
+  @Column({
+    type: 'enum',
+    enum: Major,
+    nullable: true,
+  })
   major: Major;
 }
