@@ -1,5 +1,4 @@
 export enum Region {
-  None = 'None',
-  Buddhism = 'Buddhism',
-  Christianity = 'Christianity',
+  VietNam = 'VietNam',
+  Foreign = 'Foreign',
 }

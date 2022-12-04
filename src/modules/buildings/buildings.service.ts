@@ -1,26 +1,59 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../users/entity/users.entity';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
+import { Building } from './entities/building.entity';
 
 @Injectable()
 export class BuildingsService {
-  create(createBuildingDto: CreateBuildingDto) {
-    return 'This action adds a new building';
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+    @InjectRepository(Building)
+    private buildingRepo: Repository<Building>,
+  ) {}
+  async create(payload: CreateBuildingDto) {
+    const manage = await this.userRepo.findOne({
+      where: {
+        id: payload.managerId,
+      },
+    });
+    return await this.buildingRepo.save({
+      ...payload,
+      manager: manage,
+    });
   }
 
-  findAll() {
-    return `This action returns all buildings`;
+  async findAll() {
+    return await this.buildingRepo.find({
+      relations: ['manage'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} building`;
+  async findOne(id: string) {
+    return await this.buildingRepo.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['manage'],
+    });
   }
 
-  update(id: number, updateBuildingDto: UpdateBuildingDto) {
-    return `This action updates a #${id} building`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} building`;
+  async update(id: string, payload: UpdateBuildingDto) {
+    const building = await this.findOne(id);
+    if (payload.managerId) {
+      const manager = await this.userRepo.findOne({
+        where: {
+          id: payload.managerId,
+        },
+      });
+      building.manager = manager;
+    }
+    return await this.userRepo.save({
+      ...building,
+      ...payload,
+    });
   }
 }

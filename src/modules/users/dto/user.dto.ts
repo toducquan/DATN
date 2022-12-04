@@ -40,8 +40,8 @@ export class CreateUserDto {
   @IsOptional()
   role: Role;
 
-  @IsNumber()
-  age: number;
+  @IsString()
+  age: string;
 
   @IsString()
   @IsOptional()

@@ -1,11 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Building } from '../buildings/entities/building.entity';
+import { User } from '../users/entity/users.entity';
 import { CreateFloorDto } from './dto/create-floor.dto';
 import { UpdateFloorDto } from './dto/update-floor.dto';
+import { Floor } from './entities/floor.entity';
 
 @Injectable()
 export class FloorsService {
-  create(createFloorDto: CreateFloorDto) {
-    return 'This action adds a new floor';
+  constructor(
+    @InjectRepository(Floor)
+    private floorRepo: Repository<Floor>,
+    @InjectRepository(Building)
+    private buildingRepo: Repository<Building>,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+  ) {}
+  async create(payload: CreateFloorDto) {
+    const building = await this.floorRepo.findOne({
+      where: {
+        id: payload.buildingId,
+      },
+    });
+    const manage = await this.userRepo.findOne({
+      where: {
+        id: payload.managerId,
+      },
+    });
+    return await this.floorRepo.save({
+      ...payload,
+      building: building,
+      manager: manage,
+    });
   }
 
   findAll() {

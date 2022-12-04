@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/guards/role.guard';
 import { BuildingsService } from './buildings.service';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
@@ -7,6 +20,8 @@ import { UpdateBuildingDto } from './dto/update-building.dto';
 export class BuildingsController {
   constructor(private readonly buildingsService: BuildingsService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.BUILDING_MANAGER)
   @Post()
   create(@Body() createBuildingDto: CreateBuildingDto) {
     return this.buildingsService.create(createBuildingDto);
@@ -19,16 +34,16 @@ export class BuildingsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.buildingsService.findOne(+id);
+    return this.buildingsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.BUILDING_MANAGER)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBuildingDto: UpdateBuildingDto) {
-    return this.buildingsService.update(+id, updateBuildingDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.buildingsService.remove(+id);
+  update(
+    @Param('id') id: string,
+    @Body() updateBuildingDto: UpdateBuildingDto,
+  ) {
+    return this.buildingsService.update(id, updateBuildingDto);
   }
 }

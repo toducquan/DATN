@@ -44,7 +44,7 @@ export class User extends AbstractEntity {
   religion: Religion;
 
   @Column({
-    default: Region.None,
+    default: Region.VietNam,
   })
   region: Region;
 
@@ -56,7 +56,7 @@ export class User extends AbstractEntity {
   @Column({
     unique: true,
   })
-  age: number;
+  age: string;
 
   @Column({
     unique: true,
