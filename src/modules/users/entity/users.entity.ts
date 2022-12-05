@@ -5,6 +5,7 @@ import { Region } from 'src/enums/region.enum';
 import { Religion } from 'src/enums/religion.enum';
 import { Role } from 'src/enums/role.enum';
 import { Hobby } from 'src/modules/hobbies/entities/hobby.entity';
+import { Room } from 'src/modules/rooms/entities/room.entity';
 import {
   Column,
   Entity,
@@ -53,9 +54,7 @@ export class User extends AbstractEntity {
   })
   role: Role;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   age: string;
 
   @Column({
@@ -135,4 +134,12 @@ export class User extends AbstractEntity {
     nullable: true,
   })
   major: Major;
+
+  @ManyToOne(() => Room, (room) => room.users, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({
+    name: 'roomId',
+  })
+  room: Room;
 }

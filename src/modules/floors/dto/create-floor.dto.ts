@@ -10,3 +10,8 @@ export class CreateFloorDto {
   @IsString()
   managerId: string;
 }
+
+export class QueryFloorDto {
+  @IsString()
+  buildingId: string;
+}

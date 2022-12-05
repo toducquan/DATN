@@ -10,7 +10,7 @@ const ormConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD || '123',
   database: process.env.DB_SCHEMA || 'hust',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: true,
   logging: true,
 };
 
