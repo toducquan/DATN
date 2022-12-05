@@ -101,3 +101,13 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
+
+export class QueryUserDto {
+  @IsEnum(Role)
+  @IsOptional()
+  role: Role;
+
+  @IsString()
+  @IsOptional()
+  studentId: string;
+}

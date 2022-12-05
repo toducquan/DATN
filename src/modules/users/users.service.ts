@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HobbiesService } from '../hobbies/hobbies.service';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, QueryUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entity/users.entity';
 
 @Injectable()
@@ -38,5 +38,9 @@ export class UsersService {
       ...payload,
       hobbies: listHobbies,
     });
+  }
+
+  async findAll(payload: QueryUserDto) {
+    const fullTextSearchQuery = [];
   }
 }
