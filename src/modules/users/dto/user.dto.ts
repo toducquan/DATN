@@ -100,7 +100,11 @@ export class CreateUserDto {
   major: Major;
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsString()
+  @IsOptional()
+  roomId: string;
+}
 
 export class QueryUserDto {
   @IsEnum(Role)
