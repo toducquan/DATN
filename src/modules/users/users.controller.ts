@@ -6,7 +6,12 @@ import {
   Query,
   Body,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/guards/role.guard';
 import { QueryUserDto, UpdateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
@@ -24,11 +29,15 @@ export class UsersController {
     return await this.usersService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.FLOOR_MANAGER)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() pyaload: UpdateUserDto) {
     return await this.usersService.update(id, pyaload);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.FLOOR_MANAGER)
   @Delete(':id')
   async deleteUser(@Param('id') id: string) {
     return await this.usersService.deleteUser(id);
