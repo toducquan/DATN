@@ -1,5 +1,5 @@
 import { AbstractEntity } from 'src/abstracts/entity.abstract';
-import { Floor } from 'src/modules/floors/entities/floor.entity';
+import { Building } from 'src/modules/buildings/entities/building.entity';
 import { User } from 'src/modules/users/entity/users.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
@@ -11,13 +11,21 @@ export class Room extends AbstractEntity {
   @Column()
   square: string;
 
-  @ManyToOne(() => Floor, {
+  @ManyToOne(() => Building, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({
-    name: 'floorId',
+    name: 'buildingId',
   })
-  floor: Floor;
+  building: Building;
+
+  @ManyToOne(() => User, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({
+    name: 'managerId',
+  })
+  manager: User;
 
   @Column()
   maxStudentAllow: number;

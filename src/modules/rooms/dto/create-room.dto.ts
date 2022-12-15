@@ -8,7 +8,10 @@ export class CreateRoomDto {
   square: string;
 
   @IsString()
-  floorId: string;
+  buildingId: string;
+
+  @IsString()
+  managerId: string;
 
   @IsString()
   note?: string;
@@ -34,5 +37,5 @@ export class CreateRoomDto {
 
 export class QueryRoomDto {
   @IsString()
-  floorId: string;
+  buildingId: string;
 }

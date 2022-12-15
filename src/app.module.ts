@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import ormConfig from './configs/typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuildingsModule } from './modules/buildings/buildings.module';
-import { FloorsModule } from './modules/floors/floors.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
 import { RentsModule } from './modules/rents/rents.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
@@ -20,7 +19,6 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     HobbiesModule,
     BuildingsModule,
-    FloorsModule,
     RentsModule,
     StudentRentModule,
     RoomsModule,

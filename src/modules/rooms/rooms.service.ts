@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Floor } from '../floors/entities/floor.entity';
+import { Building } from '../buildings/entities/building.entity';
+import { User } from '../users/entity/users.entity';
 import { CreateRoomDto, QueryRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { Room } from './entities/room.entity';
@@ -11,28 +12,37 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomRepo: Repository<Room>,
-    @InjectRepository(Floor)
-    private floorRepo: Repository<Floor>,
+    @InjectRepository(Building)
+    private buildingRepo: Repository<Building>,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
   ) {}
   async create(payload: CreateRoomDto) {
-    const floor = await this.floorRepo.findOne({
+    const building = await this.buildingRepo.findOne({
       where: {
-        id: payload.floorId,
+        id: payload.buildingId,
+      },
+    });
+    const manage = await this.userRepo.findOne({
+      where: {
+        id: payload.managerId,
       },
     });
     return await this.roomRepo.save({
       ...payload,
-      floor: floor,
+      building: building,
+      manager: manage,
     });
   }
 
   async findAll(payload: QueryRoomDto) {
     const rooms = await this.roomRepo.find({
       where: {
-        floor: {
-          id: payload.floorId,
+        building: {
+          id: payload.buildingId,
         },
       },
+      relations: ['manager'],
     });
     return rooms;
   }

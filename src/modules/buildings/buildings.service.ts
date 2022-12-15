@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FloorsService } from '../floors/floors.service';
+import { RoomsService } from '../rooms/rooms.service';
 import { User } from '../users/entity/users.entity';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
@@ -14,8 +14,8 @@ export class BuildingsService {
     private userRepo: Repository<User>,
     @InjectRepository(Building)
     private buildingRepo: Repository<Building>,
-    @Inject(forwardRef(() => FloorsService))
-    private floorsService: FloorsService,
+    @Inject(forwardRef(() => RoomsService))
+    private roomService: RoomsService,
   ) {}
   async create(payload: CreateBuildingDto) {
     const manage = await this.userRepo.findOne({
@@ -36,7 +36,7 @@ export class BuildingsService {
   }
 
   async findOne(id: string) {
-    const floors = await this.floorsService.findAll({ buildingId: id });
+    const rooms = await this.roomService.findAll({ buildingId: id });
     const building = await this.buildingRepo.findOne({
       where: {
         id: id,
@@ -45,7 +45,7 @@ export class BuildingsService {
     });
     return {
       ...building,
-      floors,
+      rooms,
     };
   }
 

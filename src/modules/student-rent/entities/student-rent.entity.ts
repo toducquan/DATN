@@ -5,7 +5,9 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class StudentRent extends AbstractEntity {
-  @Column()
+  @Column({
+    default: false,
+  })
   paid: boolean;
 
   @ManyToOne(() => User, {
