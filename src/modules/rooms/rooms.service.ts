@@ -42,7 +42,7 @@ export class RoomsService {
           id: payload.buildingId,
         },
       },
-      relations: ['manager'],
+      relations: ['manager', 'users'],
     });
     return rooms;
   }

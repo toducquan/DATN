@@ -5,6 +5,9 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 @Entity()
 export class Rent extends AbstractEntity {
   @Column()
+  name: string;
+
+  @Column()
   cost: number;
 
   @ManyToOne(() => Building, {

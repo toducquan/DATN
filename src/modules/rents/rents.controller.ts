@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { RentsService } from './rents.service';
-import { CreateRentDto } from './dto/create-rent.dto';
+import { CreateRentDto, QueryRentDto } from './dto/create-rent.dto';
 import { UpdateRentDto } from './dto/update-rent.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('rents')
 export class RentsController {
   constructor(private readonly rentsService: RentsService) {}
@@ -21,22 +26,22 @@ export class RentsController {
   }
 
   @Get()
-  findAll() {
-    return this.rentsService.findAll();
+  findAll(@Query() query: QueryRentDto) {
+    return this.rentsService.findAll(query);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.rentsService.findOne(+id);
+    return this.rentsService.findOne(id);
+  }
+
+  @Get('/student')
+  findOneForStudent(@Request() req) {
+    return this.rentsService.findOneForStudent(req.user.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRentDto: UpdateRentDto) {
-    return this.rentsService.update(+id, updateRentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rentsService.remove(+id);
+  update(@Param('id') id: string, @Body() payload: UpdateRentDto) {
+    return this.rentsService.update(id, payload);
   }
 }
