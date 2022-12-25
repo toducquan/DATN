@@ -11,7 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RentsService } from './rents.service';
-import { CreateRentDto, QueryRentDto } from './dto/create-rent.dto';
+import {
+  CreateRentDto,
+  QueryRentDto,
+  StudentQueryRentDto,
+} from './dto/create-rent.dto';
 import { UpdateRentDto } from './dto/update-rent.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
@@ -36,8 +40,8 @@ export class RentsController {
   }
 
   @Get('/student')
-  findOneForStudent(@Request() req) {
-    return this.rentsService.findOneForStudent(req.user.id);
+  findOneForStudent(@Request() req, @Query() query: StudentQueryRentDto) {
+    return this.rentsService.findOneForStudent(req.user.id, query);
   }
 
   @Patch(':id')

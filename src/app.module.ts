@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import ormConfig from './configs/typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuildingsModule } from './modules/buildings/buildings.module';
+import { FeesModule } from './modules/fees/fees.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
 import { RentsModule } from './modules/rents/rents.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
@@ -23,6 +24,7 @@ import { UsersModule } from './modules/users/users.module';
     StudentRentModule,
     RoomsModule,
     AuthModule,
+    FeesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

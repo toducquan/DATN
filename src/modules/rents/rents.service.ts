@@ -4,9 +4,14 @@ import { Repository } from 'typeorm';
 import { Building } from '../buildings/entities/building.entity';
 import { RoomsService } from '../rooms/rooms.service';
 import { StudentRent } from '../student-rent/entities/student-rent.entity';
-import { CreateRentDto, QueryRentDto } from './dto/create-rent.dto';
+import {
+  CreateRentDto,
+  QueryRentDto,
+  StudentQueryRentDto,
+} from './dto/create-rent.dto';
 import { UpdateRentDto } from './dto/update-rent.dto';
 import { Rent } from './entities/rent.entity';
+import * as moment from 'moment';
 
 @Injectable()
 export class RentsService {
@@ -32,6 +37,7 @@ export class RentsService {
     const rent = await this.rentRepo.save({
       ...payload,
       building: building,
+      deadline: moment(new Date()).add(30, 'd'),
     });
     await Promise.all(
       rooms.map(async (room) => {
@@ -47,13 +53,17 @@ export class RentsService {
   }
 
   async findAll(query: QueryRentDto) {
-    const rents = await this.rentRepo.find({
-      where: {
-        building: {
-          id: query.buildingId,
-        },
-      },
-    });
+    const fullTextSearch = [];
+    if (query.buildingId) {
+      fullTextSearch.push(`rent.buildingId = '${query.buildingId}'`);
+    }
+    if (query.name) {
+      fullTextSearch.push(`rent.name like '%${query.name}%'`);
+    }
+    const rents = await this.rentRepo
+      .createQueryBuilder('rent')
+      .where(fullTextSearch.join(' and '))
+      .getMany();
     return rents;
   }
 
@@ -68,15 +78,20 @@ export class RentsService {
     });
   }
 
-  async findOneForStudent(studentId: string) {
-    return await this.studentRentRepo.find({
-      where: {
-        student: {
-          id: studentId,
-        },
-      },
-      relations: ['rent'],
-    });
+  async findOneForStudent(studentId: string, query: StudentQueryRentDto) {
+    const fullTextSearch = [];
+    fullTextSearch.push(`studentRent.studentId = '${studentId}'`);
+    if (query.name) {
+      fullTextSearch.push(`rent.name like '%${query.name}%'`);
+    }
+    if (query.paid) {
+      fullTextSearch.push(`studentRent.paid = '${query.paid}'`);
+    }
+    return await this.studentRentRepo
+      .createQueryBuilder('studentRent')
+      .leftJoinAndSelect('studentRent.rent', 'rent')
+      .where(fullTextSearch.join(' and '))
+      .getMany();
   }
 
   async update(id: string, payload: UpdateRentDto) {
@@ -92,6 +107,7 @@ export class RentsService {
                 id: id,
               },
             },
+            relations: ['student', 'rent'],
           });
           await this.studentRentRepo.save({
             ...studentRent,
@@ -100,8 +116,14 @@ export class RentsService {
         }),
       );
     }
-    return {
-      message: 'updated',
-    };
+    const rent = await this.rentRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+    return this.rentRepo.save({
+      ...rent,
+      ...payload,
+    });
   }
 }

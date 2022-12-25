@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateRentDto {
   @IsNumber()
@@ -14,8 +14,19 @@ export class CreateRentDto {
 export class QueryRentDto {
   @IsString()
   @IsOptional()
-  studentId;
+  buildingId: string;
 
   @IsString()
-  buildingId;
+  @IsOptional()
+  name: string;
+}
+
+export class StudentQueryRentDto {
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsBoolean()
+  @IsOptional()
+  paid: boolean;
 }

@@ -17,4 +17,9 @@ export class Rent extends AbstractEntity {
     name: 'buildingId',
   })
   building: Building;
+
+  @Column({
+    nullable: true,
+  })
+  deadline: Date;
 }
