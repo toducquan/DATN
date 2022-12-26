@@ -34,14 +34,14 @@ export class FeesController {
     return this.feesService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feesService.findOne(id);
-  }
-
   @Get('/student')
   findOneForStudent(@Request() req, @Query() query: StudentQueryFeeDto) {
     return this.feesService.findOneForStudent(req.user.id, query);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.feesService.findOne(id);
   }
 
   @Patch(':id')

@@ -37,7 +37,7 @@ export class RentsService {
     const rent = await this.rentRepo.save({
       ...payload,
       building: building,
-      deadline: moment(new Date()).add(30, 'd'),
+      deadline: moment(new Date()).add(30, 'd').toDate(),
     });
     await Promise.all(
       rooms.map(async (room) => {
@@ -62,6 +62,7 @@ export class RentsService {
     }
     const rents = await this.rentRepo
       .createQueryBuilder('rent')
+      .leftJoinAndSelect('rent.building', 'building')
       .where(fullTextSearch.join(' and '))
       .getMany();
     return rents;
@@ -85,7 +86,7 @@ export class RentsService {
       fullTextSearch.push(`rent.name like '%${query.name}%'`);
     }
     if (query.paid) {
-      fullTextSearch.push(`studentRent.paid = '${query.paid}'`);
+      fullTextSearch.push(`studentRent.paid = ${query.paid}`);
     }
     return await this.studentRentRepo
       .createQueryBuilder('studentRent')

@@ -87,7 +87,6 @@ export class User extends AbstractEntity {
 
   @Column({
     nullable: true,
-    unique: true,
   })
   fatherOccupation: string;
 
@@ -115,7 +114,6 @@ export class User extends AbstractEntity {
 
   @Column({
     nullable: true,
-    unique: true,
   })
   motherOccupation: string;
 

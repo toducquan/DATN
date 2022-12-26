@@ -34,14 +34,14 @@ export class RentsController {
     return this.rentsService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rentsService.findOne(id);
-  }
-
   @Get('/student')
   findOneForStudent(@Request() req, @Query() query: StudentQueryRentDto) {
     return this.rentsService.findOneForStudent(req.user.id, query);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.rentsService.findOne(id);
   }
 
   @Patch(':id')

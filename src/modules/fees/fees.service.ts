@@ -1,5 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as moment from 'moment';
 import { Repository } from 'typeorm';
 import { RoomFee } from '../room-fee/entities/room-fee.entity';
 import { RoomsService } from '../rooms/rooms.service';
@@ -27,12 +28,13 @@ export class FeesService {
     const fee = await this.feeRepo.save({
       ...payload,
       room: room,
+      deadline: moment(new Date()).add(30, 'd').toDate(),
     });
     await Promise.all(
       room.users.map(async (user) => {
         await this.roomFeeRepo.save({
           fee: fee,
-          user: user,
+          student: user,
         });
       }),
     );
@@ -75,10 +77,10 @@ export class FeesService {
       fullTextSearch.push(`fee.name like '%${query.name}%'`);
     }
     if (query.paid) {
-      fullTextSearch.push(`studentRent.paid = '${query.paid}'`);
+      fullTextSearch.push(`roomFee.paid = ${query.paid}`);
     }
     if (query.type) {
-      fullTextSearch.push(`studentRent.type = '${query.type}'`);
+      fullTextSearch.push(`fee.type = '${query.type}'`);
     }
     return await this.roomFeeRepo
       .createQueryBuilder('roomFee')

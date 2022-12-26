@@ -9,9 +9,6 @@ export class RoomFee extends AbstractEntity {
   @ManyToOne(() => Fee)
   fee: Fee;
 
-  @ManyToOne(() => Room)
-  room: Room;
-
   @ManyToOne(() => User)
   student: User;
 
