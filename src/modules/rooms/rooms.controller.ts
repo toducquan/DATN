@@ -7,9 +7,10 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { CreateRoomDto, QueryRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/role.guard';
@@ -19,6 +20,10 @@ import { Role } from 'src/enums/role.enum';
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
+  @Get('')
+  findAll(@Query() query: QueryRoomDto) {
+    return this.roomsService.findAll(query);
+  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.FLOOR_MANAGER)

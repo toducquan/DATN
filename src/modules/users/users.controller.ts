@@ -32,8 +32,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.FLOOR_MANAGER)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() pyaload: UpdateUserDto) {
-    return await this.usersService.update(id, pyaload);
+  async update(@Param('id') id: string, @Body() payload: UpdateUserDto) {
+    return await this.usersService.update(id, payload);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

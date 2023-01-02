@@ -46,10 +46,10 @@ export class UsersService {
   async findAll(payload: QueryUserDto) {
     const fullTextSearchQuery = [];
     if (payload.role) {
-      fullTextSearchQuery.push(`user.role = ${payload.role}`);
+      fullTextSearchQuery.push(`user.role = '${payload.role}'`);
     }
     if (payload.studentId) {
-      fullTextSearchQuery.push(`user.studentId = ${payload.studentId}`);
+      fullTextSearchQuery.push(`user.studentId = '${payload.studentId}'`);
     }
     return await this.userRepository
       .createQueryBuilder('user')
