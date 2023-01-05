@@ -52,7 +52,7 @@ export class RoomsService {
       where: {
         id: id,
       },
-      relations: ['users'],
+      relations: ['manager', 'users'],
     });
   }
 
@@ -62,7 +62,14 @@ export class RoomsService {
         id: id,
       },
     });
-
+    if (payload.managerId) {
+      const manager = await this.userRepo.findOne({
+        where: {
+          id: payload.managerId,
+        },
+      });
+      room.manager = manager;
+    }
     return await this.roomRepo.save({
       ...room,
       ...payload,
