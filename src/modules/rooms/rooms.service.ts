@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Building } from '../buildings/entities/building.entity';
 import { User } from '../users/entity/users.entity';
 import { CreateRoomDto, QueryRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import { DeleteStudentInRoomDto, UpdateRoomDto } from './dto/update-room.dto';
 import { Room } from './entities/room.entity';
 
 @Injectable()
@@ -74,5 +74,24 @@ export class RoomsService {
       ...room,
       ...payload,
     });
+  }
+
+  async deleteStudent(payload: DeleteStudentInRoomDto) {
+    await Promise.all(
+      payload.students.map(async (item) => {
+        const user = await this.userRepo.findOne({
+          where: {
+            id: item,
+          },
+        });
+        await this.userRepo.save({
+          ...user,
+          room: null,
+        });
+      }),
+    );
+    return {
+      message: 'Update Successfully',
+    };
   }
 }

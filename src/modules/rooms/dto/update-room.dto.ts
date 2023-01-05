@@ -7,3 +7,8 @@ export class UpdateRoomDto extends PartialType(CreateRoomDto) {
   @IsOptional()
   managerId: string;
 }
+
+export class DeleteStudentInRoomDto {
+  @IsString({ each: true })
+  students: string[];
+}

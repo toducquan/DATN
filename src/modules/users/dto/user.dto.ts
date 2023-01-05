@@ -114,4 +114,12 @@ export class QueryUserDto {
   @IsString()
   @IsOptional()
   studentId: string;
+
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  email: string;
 }

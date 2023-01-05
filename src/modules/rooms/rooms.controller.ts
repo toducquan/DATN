@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto, QueryRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import { DeleteStudentInRoomDto, UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
@@ -35,6 +35,11 @@ export class RoomsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.roomsService.findOne(id);
+  }
+
+  @Patch('/students-in-room')
+  deleteStudent(@Body() students: DeleteStudentInRoomDto) {
+    return this.roomsService.deleteStudent(students);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

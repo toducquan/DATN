@@ -49,7 +49,13 @@ export class UsersService {
       fullTextSearchQuery.push(`user.role = '${payload.role}'`);
     }
     if (payload.studentId) {
-      fullTextSearchQuery.push(`user.studentId = '${payload.studentId}'`);
+      fullTextSearchQuery.push(`user.studentId like '%${payload.studentId}%'`);
+    }
+    if (payload.name) {
+      fullTextSearchQuery.push(`user.name like '%${payload.name}%'`);
+    }
+    if (payload.email) {
+      fullTextSearchQuery.push(`user.email like '%${payload.email}%'`);
     }
     return await this.userRepository
       .createQueryBuilder('user')
