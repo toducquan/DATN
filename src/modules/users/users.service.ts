@@ -59,6 +59,7 @@ export class UsersService {
     }
     return await this.userRepository
       .createQueryBuilder('user')
+      .leftJoinAndSelect('user.room', 'room')
       .where(fullTextSearchQuery.join(' and '))
       .getMany();
   }
