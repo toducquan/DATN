@@ -69,14 +69,23 @@ export class RentsService {
   }
 
   async findOne(id: string) {
-    return await this.studentRentRepo.find({
+    const rent = await this.rentRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+    const studentInRent = await this.studentRentRepo.find({
       where: {
         rent: {
           id: id,
         },
       },
-      relations: ['student'],
+      relations: ['student', 'student.room'],
     });
+    return {
+      rent,
+      studentInRent,
+    };
   }
 
   async findOneForStudent(studentId: string, query: StudentQueryRentDto) {
