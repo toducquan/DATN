@@ -119,6 +119,7 @@ export class RentsService {
             },
             relations: ['student', 'rent'],
           });
+          console.log('vaoooo: ', studentRent, studentId, id);
           await this.studentRentRepo.save({
             ...studentRent,
             paid: true,
@@ -131,7 +132,8 @@ export class RentsService {
         id: id,
       },
     });
-    return this.rentRepo.save({
+    delete payload.paid;
+    return await this.rentRepo.save({
       ...rent,
       ...payload,
     });

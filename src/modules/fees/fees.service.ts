@@ -54,13 +54,19 @@ export class FeesService {
     }
     const fees = await this.feeRepo
       .createQueryBuilder('fee')
+      .leftJoinAndSelect('fee.room', 'room')
       .where(fullTextSearch.join(' and '))
       .getMany();
     return fees;
   }
 
   async findOne(id: string) {
-    return await this.roomFeeRepo.find({
+    const fee = await this.feeRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+    const studentInFee = await this.roomFeeRepo.find({
       where: {
         fee: {
           id: id,
@@ -68,6 +74,10 @@ export class FeesService {
       },
       relations: ['student'],
     });
+    return {
+      fee,
+      studentInFee,
+    };
   }
 
   async findOneForStudent(studentId: string, query: StudentQueryFeeDto) {
@@ -111,13 +121,14 @@ export class FeesService {
         }),
       );
     }
-    const rent = await this.feeRepo.findOne({
+    delete payload.paid;
+    const fee = await this.feeRepo.findOne({
       where: {
         id: id,
       },
     });
     return this.feeRepo.save({
-      ...rent,
+      ...fee,
       ...payload,
     });
   }
