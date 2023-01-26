@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  Request,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto, QueryRoomDto } from './dto/create-room.dto';
@@ -30,6 +31,12 @@ export class RoomsController {
   @Post()
   create(@Body() createRoomDto: CreateRoomDto) {
     return this.roomsService.create(createRoomDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/suitable-room')
+  findSuitableRoomForStudent(@Request() req: any) {
+    return this.roomsService.findSuitableRoomForStudent(req.user.id);
   }
 
   @Get(':id')

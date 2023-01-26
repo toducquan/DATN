@@ -57,6 +57,9 @@ export class User extends AbstractEntity {
   @Column()
   age: string;
 
+  @Column()
+  address: string;
+
   @Column({
     unique: true,
     nullable: true,
