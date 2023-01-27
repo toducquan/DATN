@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import ormConfig from './configs/typeorm.config';
+import { AspirationModule } from './modules/aspirations/aspirations.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuildingsModule } from './modules/buildings/buildings.module';
 import { FeesModule } from './modules/fees/fees.module';
@@ -27,6 +28,7 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     FeesModule,
     RoomSwapModule,
+    AspirationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
