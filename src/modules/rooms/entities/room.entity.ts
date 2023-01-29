@@ -27,6 +27,11 @@ export class Room extends AbstractEntity {
   })
   manager: User;
 
+  @Column({
+    default: 0,
+  })
+  numberOfStudent: number;
+
   @Column()
   maxStudentAllow: number;
 

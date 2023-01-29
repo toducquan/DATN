@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BuildingsModule } from './modules/buildings/buildings.module';
 import { FeesModule } from './modules/fees/fees.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
+import { MailModule } from './modules/mail/mail.module';
 import { RentsModule } from './modules/rents/rents.module';
 import { RoomSwapModule } from './modules/room-swap/room-swap.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
@@ -29,6 +30,7 @@ import { UsersModule } from './modules/users/users.module';
     FeesModule,
     RoomSwapModule,
     AspirationModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
