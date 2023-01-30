@@ -279,4 +279,19 @@ export class RoomsService {
       message: 'sucess',
     };
   }
+
+  async updateNumberOfUserInRoom() {
+    const rooms = await this.roomRepo.find({
+      relations: ['users'],
+    });
+    console.log('vaooo: ', rooms);
+    await Promise.all(
+      rooms.map(async (room) => {
+        await this.roomRepo.save({
+          ...room,
+          numberOfStudent: room.users.length,
+        });
+      }),
+    );
+  }
 }

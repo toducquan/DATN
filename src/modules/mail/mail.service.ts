@@ -12,4 +12,12 @@ export class MailService {
       template: './rejectAspiration',
     });
   }
+
+  async sendEmailRejectSwapRoom(email: string) {
+    return await this.mailerService.sendMail({
+      to: email,
+      subject: 'Em den lam',
+      template: './rejectSwapRequest',
+    });
+  }
 }

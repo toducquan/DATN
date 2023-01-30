@@ -15,7 +15,7 @@ export class AspirationService {
     private aspirationRepo: Repository<Aspiration>,
     @InjectRepository(Room)
     private roomRepo: Repository<Room>,
-    @InjectRepository(Room)
+    @InjectRepository(User)
     private userRepo: Repository<User>,
     @Inject(forwardRef(() => RoomsService))
     private roomsService: RoomsService,
@@ -49,6 +49,13 @@ export class AspirationService {
   }
 
   async delete(id: string) {
+    const aspiration = await this.aspirationRepo.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['student'],
+    });
+    await this.mailService.sendEmailRejectAspiration(aspiration.student.email);
     await this.aspirationRepo.delete({
       id: id,
     });
@@ -58,6 +65,7 @@ export class AspirationService {
   }
 
   async approveAll(ids: string[]) {
+    let fistAsp = [...ids];
     await Promise.all(
       ids.map(async (id, index) => {
         const asp = await this.aspirationRepo.findOne({
@@ -66,6 +74,7 @@ export class AspirationService {
           },
           relations: ['student', 'firstRoom'],
         });
+
         if (
           asp &&
           asp.firstRoom.numberOfStudent < asp.firstRoom.maxStudentAllow
@@ -76,13 +85,16 @@ export class AspirationService {
             room: asp.firstRoom,
           });
           await this.delete(id);
-          ids.splice(index, 1);
+          fistAsp = fistAsp.filter((item) => {
+            item != id;
+          });
         }
       }),
     );
 
+    let secondAsp = [...fistAsp];
     await Promise.all(
-      ids.map(async (id, index) => {
+      fistAsp.map(async (id, index) => {
         const asp = await this.aspirationRepo.findOne({
           where: {
             id: id,
@@ -99,13 +111,16 @@ export class AspirationService {
             room: asp.secondRoom,
           });
           await this.delete(id);
-          ids.splice(index, 1);
+          secondAsp = secondAsp.filter((item) => {
+            item != id;
+          });
         }
       }),
     );
 
+    let thirdAsp = [...secondAsp];
     await Promise.all(
-      ids.map(async (id, index) => {
+      secondAsp.map(async (id, index) => {
         const asp = await this.aspirationRepo.findOne({
           where: {
             id: id,
@@ -122,14 +137,15 @@ export class AspirationService {
             room: asp.thirdRoom,
           });
           await this.delete(id);
-          ids.splice(index, 1);
+          thirdAsp = thirdAsp.filter((item) => {
+            item != id;
+          });
         }
       }),
     );
-
-    if (ids.length) {
+    if (thirdAsp.length > 0) {
       await Promise.all(
-        ids.map(async (id) => {
+        thirdAsp.map(async (id) => {
           const asp = await this.aspirationRepo.findOne({
             where: {
               id: id,
@@ -140,6 +156,7 @@ export class AspirationService {
         }),
       );
     }
+    await this.roomsService.updateNumberOfUserInRoom();
     return {
       message: 'done',
     };

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/enums/role.enum';
 import { Repository } from 'typeorm';
+import { MailService } from '../mail/mail.service';
 import { Room } from '../rooms/entities/room.entity';
 import { User } from '../users/entity/users.entity';
 import { ApproveSwapRoomDto, CreateSwapRoomDto } from './dto/room-swap.dto';
@@ -16,6 +17,8 @@ export class RoomSwapService {
     private userRepo: Repository<User>,
     @InjectRepository(Room)
     private room: Repository<Room>,
+    @Inject(forwardRef(() => MailService))
+    private mailService: MailService,
   ) {}
 
   async requestSwapRoom(requestId: string, payload: CreateSwapRoomDto) {
@@ -69,6 +72,19 @@ export class RoomSwapService {
       ...swapRoom,
       isApproveByReceiveUser: true,
     });
+  }
+
+  async delete(id: string) {
+    const swapRoom = await this.roomSwapRepo.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['requestUser'],
+    });
+    await this.mailService.sendEmailRejectSwapRoom(swapRoom.requestUser.email);
+    return {
+      mess: 'success',
+    };
   }
 
   async adminApproveMultipleUsers(payload: ApproveSwapRoomDto) {

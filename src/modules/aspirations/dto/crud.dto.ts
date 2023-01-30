@@ -12,4 +12,9 @@ export class CreateAspirationDto {
   thirdRoomId: string;
 }
 
+export class ApproveAspirationDto {
+  @IsString({ each: true })
+  ids: string[];
+}
+
 export class UpdateAspirationDto extends PartialType(CreateAspirationDto) {}
