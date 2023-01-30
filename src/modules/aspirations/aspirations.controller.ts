@@ -38,6 +38,6 @@ export class AspirationController {
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.delete(id);
+    return this.aspriationService.delete(id);
   }
 }

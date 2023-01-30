@@ -41,4 +41,9 @@ export class RoomSwapController {
   update(@Param('id') id: string) {
     return this.roomSwapService.update(id);
   }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.roomSwapService.delete(id);
+  }
 }

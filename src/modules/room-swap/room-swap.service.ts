@@ -56,7 +56,9 @@ export class RoomSwapService {
     return await this.roomSwapRepo
       .createQueryBuilder('roomSwap')
       .leftJoinAndSelect('roomSwap.requestUser', 'requestUser')
+      .leftJoinAndSelect('requestUser.room', 'requestRoom')
       .leftJoinAndSelect('roomSwap.receiveUser', 'receiveUser')
+      .leftJoinAndSelect('receiveUser.room', 'receiveRoom')
       .where(fullTextSearch.join(' and '))
       .getMany();
   }
@@ -82,6 +84,9 @@ export class RoomSwapService {
       relations: ['requestUser'],
     });
     await this.mailService.sendEmailRejectSwapRoom(swapRoom.requestUser.email);
+    await this.roomSwapRepo.delete({
+      id: id,
+    });
     return {
       mess: 'success',
     };
