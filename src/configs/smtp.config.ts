@@ -10,8 +10,8 @@ export const smtpConfig: MailerOptions = {
     port: 2525,
     secure: false,
     auth: {
-      user: '757050e48349ea',
-      pass: 'd0eb5e66b9cd3d',
+      user: '36a91c663d1303',
+      pass: 'ec4833cef8184a',
     },
   },
   defaults: {
