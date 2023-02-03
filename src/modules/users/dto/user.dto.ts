@@ -8,9 +8,9 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { District } from 'src/enums/district.enum';
 import { Gender } from 'src/enums/gender.enum';
 import { Major } from 'src/enums/major.enum';
+import { Region } from 'src/enums/region.enum';
 import { Religion } from 'src/enums/religion.enum';
 import { Role } from 'src/enums/role.enum';
 
@@ -31,7 +31,7 @@ export class CreateUserDto {
   @IsEnum(Gender)
   gender: Gender;
 
-  @IsEnum(District)
+  @IsString()
   address: string;
 
   @IsBoolean()
@@ -39,6 +39,9 @@ export class CreateUserDto {
 
   @IsEnum(Religion)
   religion: Religion;
+
+  @IsEnum(Region)
+  region: Region;
 
   @IsEnum(Role)
   @IsOptional()

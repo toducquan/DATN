@@ -61,7 +61,6 @@ export class User extends AbstractEntity {
   address: string;
 
   @Column({
-    unique: true,
     nullable: true,
   })
   studentId: string;
@@ -78,13 +77,11 @@ export class User extends AbstractEntity {
 
   @Column({
     nullable: true,
-    unique: true,
   })
   fatherEmail: string;
 
   @Column({
     nullable: true,
-    unique: true,
   })
   fatherPhone: string;
 
@@ -105,13 +102,11 @@ export class User extends AbstractEntity {
 
   @Column({
     nullable: true,
-    unique: true,
   })
   motherEmail: string;
 
   @Column({
     nullable: true,
-    unique: true,
   })
   motherPhone: string;
 
