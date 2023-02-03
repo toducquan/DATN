@@ -21,6 +21,14 @@ export class HobbiesService {
       .execute();
   }
 
+  async getAllHobbies() {
+    const hobbies = await this.hobbyRepo.find();
+    const data = hobbies.map((item) => item.name);
+    return {
+      data,
+    };
+  }
+
   async findHobbyByName(name: string) {
     return this.hobbyRepo.findOne({
       where: {

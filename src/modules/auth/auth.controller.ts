@@ -31,8 +31,7 @@ export class AuthController {
     };
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.BUILDING_MANAGER)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getProfile(@Request() req: any) {
     return req.user;
