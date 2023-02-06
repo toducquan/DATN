@@ -48,6 +48,17 @@ export class AspirationService {
     });
   }
 
+  async getMyAspiration(userId: string) {
+    return await this.aspirationRepo.findOne({
+      where: {
+        student: {
+          id: userId,
+        },
+      },
+      relations: ['student', 'firstRoom', 'secondRoom', 'thirdRoom'],
+    });
+  }
+
   async delete(id: string) {
     const aspiration = await this.aspirationRepo.findOne({
       where: {

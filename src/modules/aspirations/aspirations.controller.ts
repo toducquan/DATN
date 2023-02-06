@@ -31,6 +31,11 @@ export class AspirationController {
     return this.aspriationService.findAll();
   }
 
+  @Get('/my-aspiration')
+  getMyAspiration(@Request() req: any) {
+    return this.aspriationService.getMyAspiration(req.user.id);
+  }
+
   @Post('/approve-multiple-aspiration')
   approveAll(@Body() payload: ApproveAspirationDto) {
     return this.aspriationService.approveAll(payload.ids);

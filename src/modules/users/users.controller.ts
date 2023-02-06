@@ -29,8 +29,7 @@ export class UsersController {
     return await this.usersService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.FLOOR_MANAGER)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() payload: UpdateUserDto) {
     return await this.usersService.update(id, payload);
