@@ -22,6 +22,7 @@ export class UsersService {
       where: {
         email,
       },
+      relations: ['room'],
     });
   }
 
