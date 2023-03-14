@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RoomsService } from '../rooms/rooms.service';
 import { User } from '../users/entity/users.entity';
-import { CreateBuildingDto } from './dto/create-building.dto';
+import { CreateBuildingDto, QueryBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
 import { Building } from './entities/building.entity';
 
@@ -29,7 +29,7 @@ export class BuildingsService {
     });
   }
 
-  async findAll() {
+  async findAll(query: QueryBuildingDto) {
     return await this.buildingRepo.find({
       relations: ['manager'],
     });

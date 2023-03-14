@@ -138,4 +138,13 @@ export class RentsService {
       ...payload,
     });
   }
+
+  async deleteRent(id: string) {
+    await this.rentRepo.delete({
+      id: id,
+    });
+    return {
+      message: 'delete',
+    };
+  }
 }

@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateBuildingDto {
   @IsString()
@@ -15,4 +15,10 @@ export class CreateBuildingDto {
 
   @IsString()
   managerId: string;
+}
+
+export class QueryBuildingDto {
+  @IsString()
+  @IsOptional()
+  name: string;
 }

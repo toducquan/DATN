@@ -132,4 +132,13 @@ export class FeesService {
       ...payload,
     });
   }
+
+  async deleteFee(id: string) {
+    await this.feeRepo.delete({
+      id: id,
+    });
+    return {
+      message: 'delete',
+    };
+  }
 }

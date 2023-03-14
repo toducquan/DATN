@@ -294,4 +294,13 @@ export class RoomsService {
       }),
     );
   }
+
+  async deleteRoom(id: string) {
+    await this.roomRepo.delete({
+      id: id,
+    });
+    return {
+      message: 'delete',
+    };
+  }
 }

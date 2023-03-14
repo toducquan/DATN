@@ -6,7 +6,9 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
 export class RoomFee extends AbstractEntity {
-  @ManyToOne(() => Fee)
+  @ManyToOne(() => Fee, {
+    onDelete: 'CASCADE',
+  })
   fee: Fee;
 
   @ManyToOne(() => User)

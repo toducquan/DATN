@@ -27,7 +27,7 @@ export class RoomsController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.FLOOR_MANAGER)
+  @Roles(Role.BUILDING_MANAGER)
   @Post()
   create(@Body() createRoomDto: CreateRoomDto) {
     return this.roomsService.create(createRoomDto);
@@ -54,5 +54,12 @@ export class RoomsController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(id, updateRoomDto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.BUILDING_MANAGER)
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.roomsService.deleteRoom(id);
   }
 }
