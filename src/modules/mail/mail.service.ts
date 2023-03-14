@@ -8,7 +8,7 @@ export class MailService {
   async sendEmailRejectAspiration(email: string) {
     return await this.mailerService.sendMail({
       to: email,
-      subject: 'Em den lam',
+      subject: 'Đăng kí nguyện vọng không thành công',
       template: './rejectAspiration',
     });
   }
@@ -16,7 +16,7 @@ export class MailService {
   async sendEmailRejectSwapRoom(email: string) {
     return await this.mailerService.sendMail({
       to: email,
-      subject: 'Em den lam',
+      subject: 'Đăng kí đổi phòng không thành công',
       template: './rejectSwapRequest',
     });
   }

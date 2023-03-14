@@ -111,8 +111,15 @@ export class RoomsService {
     if (currentUser.gender == Gender.Female) {
       fullTextSearch.push(`room.onlyFemale = 1`);
     }
+    if (currentUser.gender != Gender.Female) {
+      fullTextSearch.push(`room.onlyFemale = 0`);
+    }
+
     if (currentUser.region == Region.Foreign) {
       fullTextSearch.push(`room.onlyForeign = 1`);
+    }
+    if (currentUser.region != Region.Foreign) {
+      fullTextSearch.push(`room.onlyForeign = 0`);
     }
     const rooms = await this.roomRepo
       .createQueryBuilder('room')
